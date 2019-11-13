@@ -16,8 +16,8 @@ import java.util.UUID;
 public class Attendee {
     @Id
     @Column(name = "attendee_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long attendeeId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private UUID attendeeId;
     @Column(name = "user_id", unique = true)
     @NonNull
     @JsonIgnore

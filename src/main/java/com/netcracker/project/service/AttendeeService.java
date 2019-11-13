@@ -3,9 +3,11 @@ package com.netcracker.project.service;
 import com.netcracker.project.domain.Attendee;
 import com.netcracker.project.repository.AttendeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AttendeeService {
@@ -16,34 +18,18 @@ public class AttendeeService {
         this.attendeeRepository = attendeeRepository;
     }
 
-    public Attendee findByAttendeeId(Long id){
-        return this.attendeeRepository.findByAttendeeId(id);
+    public Attendee findByAttendeeId(UUID id){
+        return attendeeRepository.findByAttendeeId(id);
     }
 
     //??
-    public String getAttendeeSkills(Long id){
-        return this.attendeeRepository.findByAttendeeId(id).getSkills();
+    public String getAttendeeSkills(UUID id){
+        return attendeeRepository.findByAttendeeId(id).getSkills();
     }
 
-    public Boolean addAttendee(Attendee attendee) {
-        try {
-            attendeeRepository.save(attendee);
-            return true;
-        }catch (Exception e) {
-            System.out.println("Ошибка при сохранении пользователя");
-            return false;
-        }
+    public Attendee saveAttendee(Attendee attendee) {
+        return attendeeRepository.save(attendee);
     }
 
-    public Boolean updateAttendee(Attendee attendee) {
-        try {
-            attendeeRepository.updateAttendee(attendee.getAttendeeId(), attendee.getEmail(),
-                    attendee.getName(), attendee.getSkills(), attendee.getSurname());
-            return true;
-        }catch (Exception e) {
-            System.out.println("Ошибка при изменении данных пользователя");
-            System.out.println(e);
-            return false;
-        }
-    }
+
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MessageService {
@@ -16,17 +17,11 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public Boolean addMessage(Message message) {
-        try {
-            messageRepository.save(message);
-            return true;
-        }catch (Exception e) {
-            System.out.println("Ошибка при сохранении сообщения");
-            return false;
-        }
+    public Message saveMessage(Message message) {
+        return messageRepository.save(message);
     }
 
-    public List<Message> getLastMessages(Long chatId){
-        return this.messageRepository.getLastMessages(chatId);
+    public List<Message> getLastMessages(UUID id){
+        return messageRepository.getLastMessages(id);
     }
 }

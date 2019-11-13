@@ -12,10 +12,10 @@ import java.util.UUID;
 public class Message {
     @Id
     @Column(name = "msg_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long messageId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private UUID messageId;
     @NonNull
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "chat_id")
     private Chat chatId;
     @Column(name = "sender")

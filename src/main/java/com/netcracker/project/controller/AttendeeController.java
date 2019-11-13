@@ -3,7 +3,10 @@ package com.netcracker.project.controller;
 import com.netcracker.project.domain.Attendee;
 import com.netcracker.project.service.AttendeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 public class AttendeeController {
@@ -11,21 +14,23 @@ public class AttendeeController {
 
     @Autowired
     public AttendeeController(AttendeeService attendeeService) {
-        this.attendeeService = attendeeService;
+        attendeeService = attendeeService;
     }
 
     @GetMapping(path = "/attendee/{attendee_id}/info")
-    public String getAttendeeInfo(@PathVariable(value = "attendee_id") Long attendeeId){
-        return attendeeService.getAttendeeSkills(attendeeId);
+    public ResponseEntity getAttendeeInfo(@PathVariable(value = "attendee_id") UUID attendeeId){
+        return ResponseEntity.ok().body(attendeeService.getAttendeeSkills(attendeeId));
     }
 
-    @PostMapping(path = "/add/attendee")
-    public void addAttendee(@RequestBody Attendee attendee){
-        attendeeService.addAttendee(attendee);
+    @PostMapping(path = "/save/attendee")
+    public ResponseEntity saveAttendee(@RequestBody Attendee attendee){
+        attendeeService.saveAttendee(attendee);
+        return ResponseEntity.ok().build();
     }
 
-    @PatchMapping(path = "/attendee/update")
-    public void updateAttendee(@RequestBody Attendee attendee){
-        attendeeService.updateAttendee(attendee);
+    @PatchMapping(path = "/update/attendee")
+    public ResponseEntity updateAttendee(@RequestBody Attendee attendee){
+        attendeeService.saveAttendee(attendee);
+        return ResponseEntity.ok().build();
     }
 }

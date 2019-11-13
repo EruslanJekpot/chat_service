@@ -16,16 +16,16 @@ import java.util.UUID;
 public class Chat {
     @Id
     @Column(name = "chat_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @NonNull
-    private Long chatId;
+    private UUID chatId;
     @Column(name = "name")
     @NonNull
     private String name;
     @ManyToMany(mappedBy = "chatList")
     @JsonIgnore
     private List<Attendee> attendeeList;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chatId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatId")
     @JsonIgnore
     private List<Message> messageList;
 }

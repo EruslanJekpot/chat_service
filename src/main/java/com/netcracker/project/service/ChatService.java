@@ -4,9 +4,12 @@ import com.netcracker.project.domain.Chat;
 import com.netcracker.project.domain.Message;
 import com.netcracker.project.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ChatService {
@@ -17,21 +20,15 @@ public class ChatService {
         this.chatRepository = chatRepository;
     }
 
-    public Chat findByChatId(Long id){
-        return this.chatRepository.findByChatId(id);
+    public Chat findByChatId(UUID id) {
+        return chatRepository.findByChatId(id);
     }
 
-    public List<Message> getChatMessages(Long id){
-        return this.chatRepository.findByChatId(id).getMessageList();
+    public List<Message> getChatMessages(UUID id) {
+        return chatRepository.findByChatId(id).getMessageList();
     }
 
-    public Boolean addChat(Chat chat) {
-        try {
-            chatRepository.save(chat);
-            return true;
-        }catch (Exception e) {
-            System.out.println("Ошибка при сохранении чата");
-            return false;
-        }
+    public Chat saveChat(Chat chat) {
+        return chatRepository.save(chat);
     }
 }

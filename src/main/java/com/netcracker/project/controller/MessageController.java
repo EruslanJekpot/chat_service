@@ -3,10 +3,12 @@ package com.netcracker.project.controller;
 import com.netcracker.project.domain.Message;
 import com.netcracker.project.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class MessageController {
@@ -14,17 +16,18 @@ public class MessageController {
 
     @Autowired
     public MessageController(MessageService messageService) {
-        this.messageService = messageService;
+        messageService = messageService;
     }
 
-    @PostMapping(path = "/add/message")
-    public void addAttendee(@RequestBody Message message){
-        messageService.addMessage(message);
+    @PostMapping(path = "/save/message")
+    public ResponseEntity saveAttendee(@RequestBody Message message) {
+        messageService.saveMessage(message);
+        return ResponseEntity.ok().build();
     }
 
     @Transactional
     @GetMapping(path = "/message/{chat_id}")
-    public List<Message> getLastMessages(@PathVariable(value = "chat_id") Long chatId){
-        return messageService.getLastMessages(chatId);
+    public ResponseEntity<List<Message>> getLastMessages(@PathVariable(value = "chat_id") UUID chatId) {
+        return ResponseEntity.ok().body(messageService.getLastMessages(chatId));
     }
 }
