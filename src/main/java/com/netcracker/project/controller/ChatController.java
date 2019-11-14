@@ -10,11 +10,14 @@ public class ChatController {
     private ChatService chatService;
 
     public ChatController(ChatService chatService) {
-        chatService = chatService;
+        this.chatService = chatService;
     }
 
     @PostMapping(path = "/save/chat")
-    public ResponseEntity saveChat(@RequestBody Chat chat){
-        return ResponseEntity.ok().body(chatService.saveChat(chat));
+    public ResponseEntity saveChat(@RequestBody Chat chat) {
+        chatService.saveChat(chat);
+        return ResponseEntity.ok().build();
     }
+
+
 }

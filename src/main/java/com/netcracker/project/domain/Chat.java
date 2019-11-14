@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,13 +17,13 @@ import java.util.UUID;
 public class Chat {
     @Id
     @Column(name = "chat_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @NonNull
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy ="org.hibernate.id.UUIDGenerator")
     private UUID chatId;
     @Column(name = "name")
     @NonNull
     private String name;
-    @ManyToMany(mappedBy = "chatList")
+    @ManyToMany(mappedBy = "chatList", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Attendee> attendeeList;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatId")

@@ -14,22 +14,22 @@ public class AttendeeController {
 
     @Autowired
     public AttendeeController(AttendeeService attendeeService) {
-        attendeeService = attendeeService;
+        this.attendeeService = attendeeService;
     }
 
     @GetMapping(path = "/attendee/{attendee_id}/info")
-    public ResponseEntity getAttendeeInfo(@PathVariable(value = "attendee_id") UUID attendeeId){
+    public ResponseEntity getAttendeeInfo(@PathVariable(value = "attendee_id") UUID attendeeId) {
         return ResponseEntity.ok().body(attendeeService.getAttendeeSkills(attendeeId));
     }
 
     @PostMapping(path = "/save/attendee")
-    public ResponseEntity saveAttendee(@RequestBody Attendee attendee){
+    public ResponseEntity saveAttendee(@RequestBody Attendee attendee) {
         attendeeService.saveAttendee(attendee);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping(path = "/update/attendee")
-    public ResponseEntity updateAttendee(@RequestBody Attendee attendee){
+    public ResponseEntity updateAttendee(@RequestBody Attendee attendee) {
         attendeeService.saveAttendee(attendee);
         return ResponseEntity.ok().build();
     }

@@ -1,27 +1,47 @@
 package com.netcracker.project.service;
 
+import com.netcracker.project.domain.Chat;
 import com.netcracker.project.domain.Message;
+import com.netcracker.project.repository.AttendeeRepository;
+import com.netcracker.project.repository.ChatRepository;
 import com.netcracker.project.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class MessageService {
     private MessageRepository messageRepository;
+    private ChatRepository chatRepository;
+    private AttendeeRepository attendeeRepository;
 
     @Autowired
-    public MessageService(MessageRepository messageRepository) {
+    public MessageService(MessageRepository messageRepository, ChatRepository chatRepository, AttendeeRepository attendeeRepository) {
         this.messageRepository = messageRepository;
+        this.chatRepository = chatRepository;
+        this.attendeeRepository = attendeeRepository;
     }
 
-    public Message saveMessage(Message message) {
-        return messageRepository.save(message);
+    public void saveMessage(Message message) {
+        messageRepository.save(message);
     }
 
-    public List<Message> getLastMessages(UUID id){
-        return messageRepository.getLastMessages(id);
+    @Transactional
+    public List<Message> getTop3ByChatIdAndOrderByMessageDateDesc(UUID chatId) {
+        return messageRepository.findTop3ByChatIdOrderByMessageDateDesc(chatRepository.findByChatId(chatId));
+    }
+
+    @Transactional
+    public HashMap<Chat, Message> getChatsWithLastMessageByUserId(UUID attendeeId) {
+        HashMap<Chat, Message> result = new HashMap<>();
+        List<Chat> chats = attendeeRepository.findByAttendeeId(attendeeId).getChatList();
+        for (Chat chat : chats){
+            result.put(chat, messageRepository.findTopByChatIdOrderByMessageDateDesc(chat));
+        }
+        return result;
     }
 }

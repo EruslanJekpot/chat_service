@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,7 +17,8 @@ import java.util.UUID;
 public class Attendee {
     @Id
     @Column(name = "attendee_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy ="org.hibernate.id.UUIDGenerator")
     private UUID attendeeId;
     @Column(name = "user_id", unique = true)
     @NonNull
@@ -33,7 +35,7 @@ public class Attendee {
     private String surname;
     @Column(name = "skills")
     private String skills;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     @JoinTable(name = "chat_members",
             joinColumns = @JoinColumn(name = "attendee_id"),

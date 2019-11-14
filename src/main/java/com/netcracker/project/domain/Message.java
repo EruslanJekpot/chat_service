@@ -3,19 +3,24 @@ package com.netcracker.project.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity @Data @Table(name = "message") @NoArgsConstructor
+@Entity
+@Data
+@Table(name = "message")
+@NoArgsConstructor
 public class Message {
     @Id
     @Column(name = "msg_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy ="org.hibernate.id.UUIDGenerator")
     private UUID messageId;
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id")
     private Chat chatId;
     @Column(name = "sender")
