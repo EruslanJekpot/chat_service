@@ -7,6 +7,7 @@ import lombok.NonNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,7 +36,10 @@ public class Attendee {
     private String surname;
     @Column(name = "skills")
     private String skills;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnore
     @JoinTable(name = "chat_members",
             joinColumns = @JoinColumn(name = "attendee_id"),

@@ -30,9 +30,9 @@ public class MessageController {
     public ResponseEntity<List<Message>> getTop3ByChatIdAndOrderByMessageDateDesc(@PathVariable(value = "chat_id") UUID chatId) {
         return ResponseEntity.ok().body(messageService.getTop3ByChatIdAndOrderByMessageDateDesc(chatId));
     }
-//new uuid for attendee=0 messages
-    @GetMapping(path = "/message/lastAll")
-    public ResponseEntity<HashMap> getChatsWithLastMessageByUserId(Attendee attendee) {
-        return ResponseEntity.ok().body(messageService.getChatsWithLastMessageByUserId(attendee.getAttendeeId()));
+
+    @GetMapping(path = "/attendees/{attendee_id}/chats")
+    public ResponseEntity<HashMap> getChatsWithLastMessageByUserId(@PathVariable(value = "attendee_id") UUID attendeeId) {
+        return ResponseEntity.ok().body(messageService.getChatsWithLastMessageByUserId(attendeeId));
     }
 }

@@ -1,5 +1,6 @@
 package com.netcracker.project.service;
 
+import com.netcracker.project.domain.Attendee;
 import com.netcracker.project.domain.Chat;
 import com.netcracker.project.domain.Message;
 import com.netcracker.project.repository.AttendeeRepository;
@@ -39,7 +40,8 @@ public class MessageService {
     public HashMap<Chat, Message> getChatsWithLastMessageByUserId(UUID attendeeId) {
         HashMap<Chat, Message> result = new HashMap<>();
         List<Chat> chats = attendeeRepository.findByAttendeeId(attendeeId).getChatList();
-        for (Chat chat : chats){
+        System.out.println(chats);
+        for (Chat chat : chats) {
             result.put(chat, messageRepository.findTopByChatIdOrderByMessageDateDesc(chat));
         }
         return result;

@@ -23,13 +23,13 @@ public class AttendeeController {
     }
 
     @PostMapping(path = "/save/attendee")
-    public ResponseEntity saveAttendee(@RequestBody Attendee attendee) {
+    public ResponseEntity saveAttendee(Attendee attendee) {
         attendeeService.saveAttendee(attendee);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping(path = "/update/attendee")
-    public ResponseEntity updateAttendee(@RequestBody Attendee attendee) {
+    public ResponseEntity updateAttendee(Attendee attendee) {
         attendeeService.saveAttendee(attendee);
         return ResponseEntity.ok().build();
     }
