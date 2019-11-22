@@ -36,9 +36,11 @@ public class Attendee {
     private String surname;
     @Column(name = "skills")
     private String skills;
-    @Lob
     @Column(name = "image")
+    @JsonIgnore
     private byte[] image;
+    @JsonIgnore
+    private String imageName;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnore
     @JoinTable(name = "chat_members",

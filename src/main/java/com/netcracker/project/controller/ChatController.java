@@ -20,6 +20,4 @@ public class ChatController {
         chatService.saveChat(attendeeId, chat);
         return ResponseEntity.ok().build();
     }
-
-
 }

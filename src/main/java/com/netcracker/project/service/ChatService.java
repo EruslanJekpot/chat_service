@@ -6,6 +6,7 @@ import com.netcracker.project.repository.AttendeeRepository;
 import com.netcracker.project.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -24,10 +25,10 @@ public class ChatService {
         return chatRepository.findByChatId(id);
     }
 
+    @Transactional
     public void saveChat(UUID creatorId, Chat chat) {
-        ArrayList<Attendee> attendees = new ArrayList<>();
-        attendees.add(attendeeRepository.findByAttendeeId(creatorId));
-        chat.setAttendeeList(attendees);
-        chatRepository.save(chat);
+        Attendee attendee = attendeeRepository.findByAttendeeId(creatorId);
+        attendee.getChatList().add(chat);
+        attendeeRepository.save(attendee);
     }
 }

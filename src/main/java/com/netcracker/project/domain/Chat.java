@@ -23,7 +23,7 @@ public class Chat {
     @Column(name = "name")
     @NonNull
     private String name;
-    @ManyToMany(mappedBy = "chatList", cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "chatList", cascade = CascadeType.MERGE)
     @JsonIgnore
     private List<Attendee> attendeeList;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatId")
