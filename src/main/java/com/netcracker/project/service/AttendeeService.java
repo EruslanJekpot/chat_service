@@ -27,4 +27,8 @@ public class AttendeeService {
     public Attendee saveAttendee(Attendee attendee) {
         return attendeeRepository.save(attendee);
     }
+
+    public Attendee findAttendeeByUser(String id) {
+        return attendeeRepository.findAttendeeByUserId(id);
+    }
 }

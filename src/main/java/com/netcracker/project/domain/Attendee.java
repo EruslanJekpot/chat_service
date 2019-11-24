@@ -36,7 +36,6 @@ public class Attendee {
     private String surname;
     @Column(name = "skills")
     private String skills;
-    @Lob
     @Column(name = "image")
     private byte[] image;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
