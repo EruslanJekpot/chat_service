@@ -2,13 +2,16 @@ package com.netcracker.project.controller;
 
 import com.netcracker.project.domain.Attendee;
 import com.netcracker.project.service.AttendeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.UUID;
 
+@Component
+@Slf4j
 @RestController
 public class AttendeeController {
     private AttendeeService attendeeService;
