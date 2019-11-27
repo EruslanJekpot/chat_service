@@ -28,25 +28,30 @@ public class AttendeeController {
         return ResponseEntity.ok().body(attendeeService.getAttendeeSkills(attendeeId));
     }
 
+    public ResponseEntity getAttendeeProfile(@RequestHeader("uid") String userId) {
+        Attendee attendee = attendeeService.getAttendeeByUserId(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(attendee);
+    }
+
     @PostMapping(path = "/save/attendee")
-    public ResponseEntity saveAttendee(Attendee attendee)
-    //                                   @RequestParam("file") MultipartFile file
-    {
-  //      attendee.setImage();
+    public ResponseEntity saveAttendee(Attendee attendee) {
+        byte[] image = null;
+        try { image = attendeeService.extractBytes(".attendeeImage.jpeg");
+        } catch (Exception exc) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error loading image");
+        }
+        attendee.setImage(image);
         attendeeService.saveAttendee(attendee);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping(path = "/update/attendee")
-    public ResponseEntity updateAttendee(@RequestBody Attendee attendee,
-                                         @RequestParam("image") MultipartFile image) {
-        if (!image.isEmpty()) {
-            try {
-                attendee.setImage(image.getBytes());            //problema pri sohranenii
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            }
-        }
+    public ResponseEntity updateAttendee(@RequestHeader("uid") String userId, @RequestBody Attendee attendee) {
+        Attendee thisAttendee = attendeeService.getAttendeeByUserId(userId);
+        thisAttendee.setImage(attendee.getImage());
+        thisAttendee.setName(attendee.getName());
+        thisAttendee.setSkills(attendee.getSkills());
+        thisAttendee.setSurname(attendee.getSurname());
         attendeeService.saveAttendee(attendee);
         return ResponseEntity.ok().build();
     }

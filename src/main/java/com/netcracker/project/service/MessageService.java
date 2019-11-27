@@ -39,7 +39,7 @@ public class MessageService {
     @Transactional
     public HashMap<Chat, Message> getChatsWithLastMessageByUserId(UUID attendeeId) {
         HashMap<Chat, Message> result = new HashMap<>();
-        System.out.println("lel");
+        System.out.println("lel proverka");
         List<Chat> chats = attendeeRepository.findByAttendeeId(attendeeId).getChatList();
         for (Chat chat : chats) {
             result.put(chat, messageRepository.findTop1ByChatIdOrderByMessageDateDesc(chat));

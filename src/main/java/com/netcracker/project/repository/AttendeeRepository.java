@@ -13,5 +13,7 @@ import java.util.stream.Stream;
 @Repository
 public interface AttendeeRepository extends JpaRepository<Attendee, UUID> {
     Attendee findByAttendeeId(UUID id);
+
+    Attendee findAttendeeByUserId(String userId);
 }
 
