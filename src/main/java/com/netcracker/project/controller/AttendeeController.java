@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 import java.util.UUID;
 
 @Component
@@ -23,11 +21,12 @@ public class AttendeeController {
         this.attendeeService = attendeeService;
     }
 
-    @GetMapping(path = "/attendee/{attendee_id}/")
+    @GetMapping(path = "/attendee/{attendee_id}/info")
     public ResponseEntity getAttendeeInfo(@PathVariable(value = "attendee_id") UUID attendeeId) {
         return ResponseEntity.ok().body(attendeeService.getAttendeeSkills(attendeeId));
     }
 
+    @GetMapping(path = "/attendee/profile")
     public ResponseEntity getAttendeeProfile(@RequestHeader("uid") String userId) {
         Attendee attendee = attendeeService.getAttendeeByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(attendee);
@@ -47,12 +46,11 @@ public class AttendeeController {
 
     @PatchMapping(path = "/update/attendee")
     public ResponseEntity updateAttendee(@RequestHeader("uid") String userId, @RequestBody Attendee attendee) {
-        Attendee thisAttendee = attendeeService.getAttendeeByUserId(userId);
-        thisAttendee.setImage(attendee.getImage());
-        thisAttendee.setName(attendee.getName());
-        thisAttendee.setSkills(attendee.getSkills());
-        thisAttendee.setSurname(attendee.getSurname());
-        attendeeService.saveAttendee(attendee);
+        Attendee att = attendeeService.getAttendeeByUserId(userId);
+        att.setImage(attendee.getImage());
+        att.setEmail(attendee.getEmail());
+        att.setSkills(attendee.getSkills());
+        attendeeService.saveAttendee(att);
         return ResponseEntity.ok().build();
     }
 }
