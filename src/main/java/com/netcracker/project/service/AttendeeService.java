@@ -28,7 +28,7 @@ public class AttendeeService {
         return attendeeRepository.findByAttendeeId(attendeeId);
     }
 
-    public Attendee getAttendeeByUserId(String userId){
+    public Attendee findAttendeeByUserId(String userId){
         return attendeeRepository.findAttendeeByUserId(userId);
     }
 

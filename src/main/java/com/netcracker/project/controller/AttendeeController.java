@@ -28,7 +28,7 @@ public class AttendeeController {
 
     @GetMapping(path = "/attendee/profile")
     public ResponseEntity getAttendeeProfile(@RequestHeader("uid") String userId) {
-        Attendee attendee = attendeeService.getAttendeeByUserId(userId);
+        Attendee attendee = attendeeService.findAttendeeByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(attendee);
     }
 
@@ -46,7 +46,7 @@ public class AttendeeController {
 
     @PatchMapping(path = "/update/attendee")
     public ResponseEntity updateAttendee(@RequestHeader("uid") String userId, @RequestBody Attendee attendee) {
-        Attendee att = attendeeService.getAttendeeByUserId(userId);
+        Attendee att = attendeeService.findAttendeeByUserId(userId);
         att.setImage(attendee.getImage());
         att.setEmail(attendee.getEmail());
         att.setSkills(attendee.getSkills());
