@@ -23,7 +23,6 @@ public class Attendee {
     private UUID attendeeId;
     @Column(name = "user_id", unique = true)
     @NonNull
-    @JsonIgnore
     private String userId;
     @Column(name = "email", unique = true)
     @NonNull
@@ -37,8 +36,8 @@ public class Attendee {
     @Column(name = "skills")
     private String skills;
     @Column(name = "image")
-    @JsonIgnore
     private byte[] image;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnore
     @JoinTable(name = "chat_members",

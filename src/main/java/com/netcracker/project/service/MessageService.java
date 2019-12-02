@@ -7,6 +7,7 @@ import com.netcracker.project.repository.AttendeeRepository;
 import com.netcracker.project.repository.ChatRepository;
 import com.netcracker.project.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,15 @@ public class MessageService {
         this.attendeeRepository = attendeeRepository;
     }
 
-    public void saveMessage(Message message) {
+    // Метод для сохранения сообщения (нужен айди чата и айди юзера из хедера)
+    public void saveMessage(String userId, UUID chatId) {
+        Attendee attendee = attendeeRepository.findAttendeeByUserId(userId);
+        Chat chat = chatRepository.findByChatId(chatId);
+        Message message = new Message();
+        message.setContent(message.getContent());
+        message.setSender(attendee.getName());
+        message.setMessageDate(message.getMessageDate());
+        message.setChatId(chat);
         messageRepository.save(message);
     }
 

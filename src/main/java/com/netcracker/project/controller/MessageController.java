@@ -24,11 +24,10 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/chat")
-    @PostMapping(path = "/save/message")
-    public ResponseEntity saveMessage(@RequestBody @Payload Message message) {
-        messageService.saveMessage(message);
+    // Сохранение сообщения
+    @PostMapping(path = "/save/message/{chat_id}")
+    public ResponseEntity saveMessage(@RequestHeader("uid") String userId, @PathVariable(value = "chat_id") UUID chatId) {
+        messageService.saveMessage(userId, chatId);
         return ResponseEntity.ok().build();
     }
 
@@ -51,9 +50,9 @@ public class MessageController {
     }
 
     //poka net
-    @MessageMapping("/changeMessage")
-    @SendTo("/topic/activity")
-    public Message change(Message message) {
-        return null;
-    }
+//    @MessageMapping("/changeMessage")
+//    @SendTo("/topic/activity")
+//    public Message change(Message message) {
+//        return null;
+//    }
 }

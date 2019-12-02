@@ -11,5 +11,8 @@ import java.util.UUID;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, UUID> {
     List<Message> findTop3ByChatIdOrderByMessageDateDesc(Chat chat);   // for 3 last message in chat
+
     Message findTop1ByChatIdOrderByMessageDateDesc(Chat chat);
+
+    Message findByMessageId(UUID id);
 }

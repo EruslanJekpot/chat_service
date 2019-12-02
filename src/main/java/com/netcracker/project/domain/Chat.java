@@ -26,6 +26,7 @@ public class Chat {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "chatList", cascade = CascadeType.MERGE)
     @JsonIgnore
     private List<Attendee> attendeeList;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatId")
     @JsonIgnore
     private List<Message> messageList;

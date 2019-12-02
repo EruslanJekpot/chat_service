@@ -1,5 +1,6 @@
 package com.netcracker.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -19,13 +20,15 @@ public class Message {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy ="org.hibernate.id.UUIDGenerator")
     private UUID messageId;
+
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id")
     private Chat chatId;
-    @Column(name = "sender")
+
     @NonNull
-    private Integer sender;
+    @Column(name = "sender")
+    private String sender;
     @Column(name = "content")
     @NonNull
     private String content;
