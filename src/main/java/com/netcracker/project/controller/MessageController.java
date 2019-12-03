@@ -24,13 +24,6 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    // Сохранение сообщения
-    @PostMapping(path = "/save/message/{chat_id}")
-    public ResponseEntity saveMessage(@RequestHeader("uid") String userId, @PathVariable(value = "chat_id") UUID chatId) {
-        messageService.saveMessage(userId, chatId);
-        return ResponseEntity.ok().build();
-    }
-
     @MessageMapping("/chat.addUser")
     @SendTo("/topic/chat")
     public ResponseEntity addUser(@Payload Message message, SimpMessageHeaderAccessor headerAccessor) {
@@ -44,12 +37,13 @@ public class MessageController {
         return ResponseEntity.ok().body(messageService.getTop3ByChatIdAndOrderByMessageDateDesc(chatId));
     }
 
-    @GetMapping(path = "/attendees/{attendee_id}/chats")
-    public ResponseEntity<HashMap> getChatsWithLastMessageByUserId(@PathVariable(value = "attendee_id") UUID attendeeId) {
-        return ResponseEntity.ok().body(messageService.getChatsWithLastMessageByUserId(attendeeId));
+    @GetMapping(path = "/attendees/chats")
+    public ResponseEntity<HashMap> getChatsWithLastMessageByUserId(@RequestHeader(value = "uid") String userId) {
+        return ResponseEntity.ok().body(messageService.getChatsWithLastMessageByUserId(userId));
     }
 
     //poka net
+    //nikogda ne budet
 //    @MessageMapping("/changeMessage")
 //    @SendTo("/topic/activity")
 //    public Message change(Message message) {

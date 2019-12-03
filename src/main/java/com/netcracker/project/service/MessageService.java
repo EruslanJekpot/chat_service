@@ -28,16 +28,12 @@ public class MessageService {
         this.attendeeRepository = attendeeRepository;
     }
 
-    // Метод для сохранения сообщения (нужен айди чата и айди юзера из хедера)
-    public void saveMessage(String userId, UUID chatId) {
-        Attendee attendee = attendeeRepository.findAttendeeByUserId(userId);
-        Chat chat = chatRepository.findByChatId(chatId);
-        Message message = new Message();
-        message.setContent(message.getContent());
-        message.setSender(attendee.getName());
-        message.setMessageDate(message.getMessageDate());
+    public Message saveMessage(Message message) {
+        Attendee attendee = attendeeRepository.findByAttendeeId(UUID.fromString(message.getSender()));
+        message.setSender(attendee.getSurname()+" "+attendee.getName());
+        Chat chat = chatRepository.findByChatId(message.getChatId().getChatId());
         message.setChatId(chat);
-        messageRepository.save(message);
+        return messageRepository.save(message);
     }
 
     @Transactional
@@ -46,10 +42,10 @@ public class MessageService {
     }
 
     @Transactional
-    public HashMap<Chat, Message> getChatsWithLastMessageByUserId(UUID attendeeId) {
+    public HashMap<Chat, Message> getChatsWithLastMessageByUserId(String userId) {
         HashMap<Chat, Message> result = new HashMap<>();
         System.out.println("lel proverka");
-        List<Chat> chats = attendeeRepository.findByAttendeeId(attendeeId).getChatList();
+        List<Chat> chats = attendeeRepository.findAttendeeByUserId(userId).getChatList();
         for (Chat chat : chats) {
             result.put(chat, messageRepository.findTop1ByChatIdOrderByMessageDateDesc(chat));
         }

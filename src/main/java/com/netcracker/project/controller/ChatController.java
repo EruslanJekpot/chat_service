@@ -22,12 +22,6 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    @PostMapping(path = "/attendee/{attendee_id}/chat")
-    public ResponseEntity saveChat(@PathVariable("attendee_id") UUID attendeeId, @RequestBody Chat chat) {
-        chatService.saveChat(attendeeId, chat);
-        return ResponseEntity.ok().build();
-    }
-
     // возвращает дто чата
     @GetMapping(path = "/chatDto/{chat_id}")
     public ResponseEntity<ChatDto> getChatDtoById(@PathVariable(value = "chat_id") UUID chatId){

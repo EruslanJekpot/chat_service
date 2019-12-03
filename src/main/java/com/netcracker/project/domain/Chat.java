@@ -1,6 +1,7 @@
 package com.netcracker.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -23,11 +24,11 @@ public class Chat {
     @Column(name = "name")
     @NonNull
     private String name;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "chatList", cascade = CascadeType.MERGE)
-    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "chatList")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Attendee> attendeeList;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatId")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Message> messageList;
 }

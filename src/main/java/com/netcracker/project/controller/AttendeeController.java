@@ -30,6 +30,11 @@ public class AttendeeController {
         return ResponseEntity.ok().body(attendeeService.getAttendeeSkills(attendeeId));
     }
 
+    @GetMapping(path = "/attendee/id")
+    public ResponseEntity getAttendeeId(@RequestHeader(name = "uid") String uid) {
+        return ResponseEntity.ok().body(attendeeService.findAttendeeByUserId(uid).getAttendeeId());
+    }
+
     @GetMapping(path = "/attendee/profile")
     public ResponseEntity getAttendeeProfile(@RequestHeader("uid") String userId) {
         Attendee attendee = attendeeService.findAttendeeByUserId(userId);
