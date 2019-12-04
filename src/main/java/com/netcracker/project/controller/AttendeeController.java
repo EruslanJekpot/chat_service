@@ -67,8 +67,8 @@ public class AttendeeController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(path = "/attendee/{attendee_id}/company")
-    public ResponseEntity<HashMap> getAttendeeCompany(@PathVariable(value = "attendee_id") UUID attendeeId) {
-        return ResponseEntity.ok().body(attendeeService.getAttendeeCompany(attendeeId));
+    @GetMapping(path = "/attendee/company")
+    public ResponseEntity<HashMap> getAttendeeCompany(@RequestHeader(value = "uid") String uid) {
+        return ResponseEntity.ok().body(attendeeService.getAttendeeCompany(uid));
     }
 }

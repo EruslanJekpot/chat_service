@@ -23,13 +23,13 @@ public class WebsocketChatController {
     public void createChat(@Payload Chat chat) {
         chat = chatService.saveChat(chat);
         for (Attendee attendee: chat.getAttendeeList()) {
-            messagingTemplate.convertAndSend("/queue/chats/"+attendee.getAttendeeId(), chat);
+            messagingTemplate.convertAndSend("/queue/chats/"+attendee.getAttendeeId(), chat.getMessageList().get(0));
         }
     }
 
     @MessageMapping("/send/message")
     public void sendMessage(@Payload Message message) {
         message = messageService.saveMessage(message);
-        messagingTemplate.convertAndSend("/topic/chat/"+message.getChatId(), message);
+        messagingTemplate.convertAndSend("/topic/chat/"+message.getChatId().getChatId(), message);
     }
 }

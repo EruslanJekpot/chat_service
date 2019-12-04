@@ -11,6 +11,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -33,12 +34,12 @@ public class MessageController {
     }
 
     @GetMapping(path = "/message/{chat_id}")
-    public ResponseEntity<List<Message>> getTop3ByChatIdAndOrderByMessageDateDesc(@PathVariable(value = "chat_id") UUID chatId) {
-        return ResponseEntity.ok().body(messageService.getTop3ByChatIdAndOrderByMessageDateDesc(chatId));
+    public ResponseEntity<List<Message>> getTop15ByChatIdAndOrderByMessageDateDesc(@PathVariable(value = "chat_id") UUID chatId) {
+        return ResponseEntity.ok().body(messageService.getTop15ByChatIdAndOrderByMessageDateDesc(chatId));
     }
 
     @GetMapping(path = "/attendees/chats")
-    public ResponseEntity<HashMap> getChatsWithLastMessageByUserId(@RequestHeader(value = "uid") String userId) {
+    public ResponseEntity<ArrayList> getChatsWithLastMessageByUserId(@RequestHeader(value = "uid") String userId) {
         return ResponseEntity.ok().body(messageService.getChatsWithLastMessageByUserId(userId));
     }
 }
