@@ -41,12 +41,4 @@ public class MessageController {
     public ResponseEntity<HashMap> getChatsWithLastMessageByUserId(@RequestHeader(value = "uid") String userId) {
         return ResponseEntity.ok().body(messageService.getChatsWithLastMessageByUserId(userId));
     }
-
-    //poka net
-    //nikogda ne budet
-//    @MessageMapping("/changeMessage")
-//    @SendTo("/topic/activity")
-//    public Message change(Message message) {
-//        return null;
-//    }
 }

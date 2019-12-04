@@ -1,9 +1,9 @@
 package com.netcracker.project.service;
 
-import com.netcracker.project.Dto.ChatDto;
+import com.netcracker.project.domain.Message;
+import com.netcracker.project.dto.ChatDto;
 import com.netcracker.project.domain.Attendee;
 import com.netcracker.project.domain.Chat;
-import com.netcracker.project.domain.Message;
 import com.netcracker.project.repository.AttendeeRepository;
 import com.netcracker.project.repository.ChatRepository;
 import com.netcracker.project.repository.MessageRepository;
