@@ -22,7 +22,7 @@ create table chat_members (
 
 create table message (
     msg_id uuid not null,
-    content varchar(255),
+    content varchar,
     msg_date date,
     sender varchar(255),
     chat_id uuid,

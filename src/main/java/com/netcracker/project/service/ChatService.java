@@ -1,7 +1,6 @@
 package com.netcracker.project.service;
 
 import com.netcracker.project.domain.Message;
-import com.netcracker.project.dto.ChatDto;
 import com.netcracker.project.domain.Attendee;
 import com.netcracker.project.domain.Chat;
 import com.netcracker.project.repository.AttendeeRepository;
@@ -62,9 +61,8 @@ public class ChatService {
         return result;
     }
 
-    public ChatDto getChatDto(UUID chatId) {
+    public Chat getChat(UUID chatId) {
         Chat chat = chatRepository.findByChatId(chatId);
-        ChatDto chatDto = modelMapper.map(chat, ChatDto.class);
-        return chatDto;
+        return chat;
     }
 }

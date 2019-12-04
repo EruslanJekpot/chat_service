@@ -1,6 +1,5 @@
 package com.netcracker.project.controller;
 
-import com.netcracker.project.dto.ChatDto;
 import com.netcracker.project.domain.Chat;
 import com.netcracker.project.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +20,12 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    // возвращает дто чата
-    @GetMapping(path = "/chatDto/{chat_id}")
-    public ResponseEntity<ChatDto> getChatDtoById(@PathVariable(value = "chat_id") UUID chatId){
-        return ResponseEntity.ok().body(chatService.getChatDto(chatId));
+    @GetMapping(path = "/chat/{chat_id}")
+    public ResponseEntity getChatById (@PathVariable(value = "chat_id") UUID chatId){
+        return ResponseEntity.ok().body(chatService.getChat(chatId));
     }
 
-    // просто достаёт аттенди чата и его имя
+    // просто достаёт аттенди чата и их имена
     @GetMapping(path = "/chat/{chat_id}/members")
     public ResponseEntity<HashMap> getChatMembers(@PathVariable(value = "chat_id") UUID chatId) {
         return ResponseEntity.ok().body(chatService.getChatMembers(chatId));
