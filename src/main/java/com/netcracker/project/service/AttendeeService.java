@@ -2,12 +2,10 @@ package com.netcracker.project.service;
 
 import com.netcracker.project.domain.Attendee;
 import com.netcracker.project.domain.Chat;
-import com.netcracker.project.domain.Message;
 import com.netcracker.project.repository.AttendeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -54,9 +52,9 @@ public class AttendeeService {
         for (Chat chat : chats) {
             List<Attendee> attendees = chat.getAttendeeList();
             for (Attendee attendee : attendees) {
-                attIdFromList=attendee.getAttendeeId().toString();
-                fullName=attendee.getSurname()+" "+attendee.getName();
-                if ((!attIdFromList.equals(currentAttendee.getAttendeeId().toString())) & !result.containsKey(attIdFromList)){
+                attIdFromList = attendee.getAttendeeId().toString();
+                fullName = attendee.getSurname() + " " + attendee.getName();
+                if ((!attIdFromList.equals(currentAttendee.getAttendeeId().toString())) & !result.containsKey(attIdFromList)) {
                     result.put(attIdFromList, fullName);
                 }
             }
@@ -70,5 +68,9 @@ public class AttendeeService {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "jpg", bos);
         return (bos.toByteArray());
+    }
+
+    public List<Attendee> getChatAttendees(Chat chat) {
+        return attendeeRepository.findAttendeeByChatListContaining(chat);
     }
 }

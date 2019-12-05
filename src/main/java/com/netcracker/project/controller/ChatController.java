@@ -1,6 +1,5 @@
 package com.netcracker.project.controller;
 
-import com.netcracker.project.domain.Chat;
 import com.netcracker.project.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class ChatController {
     }
 
     @GetMapping(path = "/chat/{chat_id}")
-    public ResponseEntity getChatById (@PathVariable(value = "chat_id") UUID chatId){
+    public ResponseEntity getChatById(@PathVariable(value = "chat_id") UUID chatId) {
         return ResponseEntity.ok().body(chatService.getChat(chatId));
     }
 
@@ -29,5 +28,10 @@ public class ChatController {
     @GetMapping(path = "/chat/{chat_id}/members")
     public ResponseEntity<HashMap> getChatMembers(@PathVariable(value = "chat_id") UUID chatId) {
         return ResponseEntity.ok().body(chatService.getChatMembers(chatId));
+    }
+
+    @GetMapping(path = "/chat/check")
+    public ResponseEntity<?> checkChat(@RequestHeader(name = "uid") String uid, @RequestParam UUID receiverId) {
+        return ResponseEntity.ok().body(chatService.findByAttendees(uid, receiverId));
     }
 }

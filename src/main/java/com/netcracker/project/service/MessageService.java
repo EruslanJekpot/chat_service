@@ -7,12 +7,10 @@ import com.netcracker.project.repository.AttendeeRepository;
 import com.netcracker.project.repository.ChatRepository;
 import com.netcracker.project.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +30,7 @@ public class MessageService {
     @Transactional
     public Message saveMessage(Message message) {
         Attendee attendee = attendeeRepository.findByAttendeeId(UUID.fromString(message.getSender()));
-        message.setSender(attendee.getSurname()+" "+attendee.getName());
+        message.setSender(attendee.getSurname() + " " + attendee.getName());
         Chat chat = chatRepository.findByChatId(message.getChatId().getChatId());
         message.setChatId(chat);
         return messageRepository.save(message);
