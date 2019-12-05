@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class MessageService {
         this.attendeeRepository = attendeeRepository;
     }
 
+    @Transactional
     public Message saveMessage(Message message) {
         Attendee attendee = attendeeRepository.findByAttendeeId(UUID.fromString(message.getSender()));
         message.setSender(attendee.getSurname()+" "+attendee.getName());
@@ -37,16 +39,20 @@ public class MessageService {
     }
 
     @Transactional
-    public List<Message> getTop3ByChatIdAndOrderByMessageDateDesc(UUID chatId) {
-        return messageRepository.findTop3ByChatIdOrderByMessageDateDesc(chatRepository.findByChatId(chatId));
+    public List<Message> getTop15ByChatIdAndOrderByMessageDateDesc(UUID chatId) {
+        return messageRepository.findTop15ByChatIdOrderByMessageDateDesc(chatRepository.findByChatId(chatId));
     }
 
     @Transactional
-    public HashMap<Chat, Message> getChatsWithLastMessageByUserId(String userId) {
-        HashMap<Chat, Message> result = new HashMap<>();
+    public ArrayList<Message> getChatsWithLastMessageByUserId(String userId) {
         List<Chat> chats = attendeeRepository.findAttendeeByUserId(userId).getChatList();
+        ArrayList<Message> result = new ArrayList<>();
+        Message message;
         for (Chat chat : chats) {
-            result.put(chat, messageRepository.findTop1ByChatIdOrderByMessageDateDesc(chat));
+            message = messageRepository.findTop1ByChatIdOrderByMessageDateDesc(chat);
+            if (message != null) {
+                result.add(message);
+            }
         }
         return result;
     }

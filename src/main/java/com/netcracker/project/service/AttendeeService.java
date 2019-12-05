@@ -6,6 +6,7 @@ import com.netcracker.project.domain.Message;
 import com.netcracker.project.repository.AttendeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.function.HandlerFunction;
 import org.springframework.web.servlet.function.ServerRequest;
@@ -63,17 +64,19 @@ public class AttendeeService {
     }
 
     // идём по всем чатам нашего аттенди, и берём оттуда всех аттенди, которых ещё нет в хэшмапе
-    public HashMap<String, String> getAttendeeCompany(UUID attendeeId) {
+    @Transactional
+    public HashMap<String, String> getAttendeeCompany(String userId) {
         HashMap<String, String> result = new HashMap<>();
         String attIdFromList;
         String fullName;
-        List<Chat> chats = attendeeRepository.findByAttendeeId(attendeeId).getChatList();
+        Attendee currentAttendee = attendeeRepository.findAttendeeByUserId(userId);
+        List<Chat> chats = currentAttendee.getChatList();
         for (Chat chat : chats) {
             List<Attendee> attendees = chat.getAttendeeList();
             for (Attendee attendee : attendees) {
                 attIdFromList=attendee.getAttendeeId().toString();
                 fullName=attendee.getSurname()+" "+attendee.getName();
-                if ((attIdFromList!=attendeeId.toString()) & !result.containsKey(attIdFromList)){
+                if ((!attIdFromList.equals(currentAttendee.getAttendeeId().toString())) & !result.containsKey(attIdFromList)){
                     result.put(attIdFromList, fullName);
                 }
             }
