@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -23,8 +24,20 @@ public class AttendeeController {
         this.attendeeService = attendeeService;
     }
 
+    // получаем list стринговых айди
+    @GetMapping(path = "/event/participantsList")
+    public ResponseEntity getParticipantsId(List usersIdList) {
+        return ResponseEntity.ok().body(attendeeService.getAttendeesName(usersIdList));
+    }
+
+    // толкаем хэшмап со стринговыми айди и именами
+    @PostMapping(path = "attendee/names")
+    public ResponseEntity postAttendeesName(List attendeesName) {
+        return ResponseEntity.ok().body(attendeeService.getAttendeesName(attendeesName));
+    }
+
     @GetMapping(path = "/attendee/{attendee_id}/info")
-    public ResponseEntity getAttendeeInfo(@PathVariable(value = "attendee_id") UUID attendeeId) {
+    public ResponseEntity getAttendeeSkills(@PathVariable(value = "attendee_id") UUID attendeeId) {
         return ResponseEntity.ok().body(attendeeService.getAttendeeSkills(attendeeId));
     }
 
