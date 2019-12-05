@@ -15,5 +15,7 @@ public interface AttendeeRepository extends JpaRepository<Attendee, UUID> {
     Attendee findAttendeeByUserId(String userId);
 
     List<Attendee> findAttendeeByChatListContaining(Chat chat);
+
+    Attendee findAttendeeByEmail(String email);
 }
 

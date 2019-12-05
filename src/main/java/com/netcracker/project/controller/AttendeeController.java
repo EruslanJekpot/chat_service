@@ -58,10 +58,14 @@ public class AttendeeController {
     }
 
     @PostMapping(path = "/save/attendee")
-    public ResponseEntity saveAttendee(Attendee attendee) {
-        byte[] image = null;
+    public ResponseEntity saveAttendee(@RequestBody Attendee attendee) {
+        byte[] image;
+        Attendee existingAttendee = attendeeService.getAttendeeByEmail(attendee.getEmail());
+        if (existingAttendee != null) {
+            return ResponseEntity.badRequest().body("email in use");
+        }
         try {
-            image = attendeeService.extractBytes(".attendeeImage.jpeg");
+            image = attendeeService.extractBytes("src/main/resources/static/attendeeImage.jpg");
         } catch (Exception exc) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error loading image");
         }

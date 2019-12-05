@@ -93,4 +93,8 @@ public class AttendeeService {
     public List<Attendee> getChatAttendees(Chat chat) {
         return attendeeRepository.findAttendeeByChatListContaining(chat);
     }
+
+    public Attendee getAttendeeByEmail(String email) {
+        return attendeeRepository.findAttendeeByEmail(email);
+    }
 }
