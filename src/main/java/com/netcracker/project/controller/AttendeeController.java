@@ -3,16 +3,10 @@ package com.netcracker.project.controller;
 import com.netcracker.project.domain.Attendee;
 import com.netcracker.project.feign.AttendeeClient;
 import com.netcracker.project.service.AttendeeService;
-import io.swagger.models.Model;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,6 +54,11 @@ public class AttendeeController {
         return ResponseEntity.ok().body(attendeeService.getAttendeeSkills(attendeeId));
     }
 
+    @GetMapping(path = "/attendee/{attendee_id}")
+    public ResponseEntity getAttendee(@PathVariable(value = "attendee_id") UUID attendeeId) {
+        return ResponseEntity.ok().body(attendeeService.findByAttendeeId(attendeeId));
+    }
+
     @GetMapping(path = "/attendee/id")
     public ResponseEntity getAttendeeId(@RequestHeader(name = "uid") String uid) {
         return ResponseEntity.ok().body(attendeeService.findAttendeeByUserId(uid).getAttendeeId());
@@ -72,10 +71,14 @@ public class AttendeeController {
     }
 
     @PostMapping(path = "/save/attendee")
-    public ResponseEntity saveAttendee(Attendee attendee) {
-        byte[] image = null;
+    public ResponseEntity saveAttendee(@RequestBody Attendee attendee) {
+        byte[] image;
+        Attendee existingAttendee = attendeeService.getAttendeeByEmail(attendee.getEmail());
+        if (existingAttendee != null) {
+            return ResponseEntity.badRequest().body("email in use");
+        }
         try {
-            image = attendeeService.extractBytes(".attendeeImage.jpeg");
+            image = attendeeService.extractBytes("src/main/resources/static/attendeeImage.jpg");
         } catch (Exception exc) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error loading image");
         }

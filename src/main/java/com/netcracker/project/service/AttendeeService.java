@@ -2,7 +2,6 @@ package com.netcracker.project.service;
 
 import com.netcracker.project.domain.Attendee;
 import com.netcracker.project.domain.Chat;
-import com.netcracker.project.domain.Message;
 import com.netcracker.project.repository.AttendeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -90,5 +88,13 @@ public class AttendeeService {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "jpg", bos);
         return (bos.toByteArray());
+    }
+
+    public List<Attendee> getChatAttendees(Chat chat) {
+        return attendeeRepository.findAttendeeByChatListContaining(chat);
+    }
+
+    public Attendee getAttendeeByEmail(String email) {
+        return attendeeRepository.findAttendeeByEmail(email);
     }
 }

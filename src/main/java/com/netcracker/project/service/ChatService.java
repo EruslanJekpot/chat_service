@@ -1,15 +1,14 @@
 package com.netcracker.project.service;
 
-import com.netcracker.project.domain.Message;
 import com.netcracker.project.domain.Attendee;
 import com.netcracker.project.domain.Chat;
+import com.netcracker.project.domain.Message;
 import com.netcracker.project.repository.AttendeeRepository;
 import com.netcracker.project.repository.ChatRepository;
 import com.netcracker.project.repository.MessageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class ChatService {
     private ChatRepository chatRepository;
@@ -31,7 +31,6 @@ public class ChatService {
         this.modelMapper = modelMapper;
     }
 
-    @Transactional
     public Chat saveChat(Chat chat) {
         ArrayList<UUID> chatMembersId = (ArrayList<UUID>) chat.getAttendeeList().stream()
                 .map(Attendee::getAttendeeId).collect(Collectors.toList());
@@ -46,10 +45,10 @@ public class ChatService {
         chatRepository.save(chat);
         Message message = chat.getMessageList().get(0);
         Attendee sender = attendeeRepository.findByAttendeeId(UUID.fromString(message.getSender()));
-        message.setSender(sender.getSurname()+" "+sender.getName());
+        message.setSender(sender.getSurname() + " " + sender.getName());
         message.setChatId(chat);
         messageRepository.save(message);
-       return chat;
+        return chat;
     }
 
     public HashMap<Attendee, String> getChatMembers(UUID chatId) {
@@ -62,7 +61,16 @@ public class ChatService {
     }
 
     public Chat getChat(UUID chatId) {
-        Chat chat = chatRepository.findByChatId(chatId);
-        return chat;
+        return chatRepository.findByChatId(chatId);
+    }
+
+    public Chat findByAttendees(String senderId, UUID receiverId) {
+        Attendee sender = attendeeRepository.findAttendeeByUserId(senderId);
+        Attendee receiver = attendeeRepository.findByAttendeeId(receiverId);
+        List<Chat> chats = chatRepository.findChatByAttendeeListContains(sender);
+        chats = chats.stream().filter((chat) ->
+                chat.getAttendeeList().size() == 2 && chat.getAttendeeList().contains(receiver)
+        ).collect(Collectors.toList());
+        return (chats.size() != 0) ? chats.get(0) : null;
     }
 }

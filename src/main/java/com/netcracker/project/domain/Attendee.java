@@ -5,11 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +18,7 @@ public class Attendee {
     @Id
     @Column(name = "attendee_id")
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy ="org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID attendeeId;
     @Column(name = "user_id", unique = true)
     @NonNull
@@ -44,6 +41,6 @@ public class Attendee {
     @JsonIgnore
     @JoinTable(name = "chat_members",
             joinColumns = @JoinColumn(name = "attendee_id"),
-    inverseJoinColumns = @JoinColumn(name = "chat_id"))
+            inverseJoinColumns = @JoinColumn(name = "chat_id"))
     private List<Chat> chatList;
 }
