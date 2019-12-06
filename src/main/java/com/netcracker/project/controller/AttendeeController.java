@@ -65,7 +65,7 @@ public class AttendeeController {
             return ResponseEntity.badRequest().body("email in use");
         }
         try {
-            image = attendeeService.extractBytes("src/main/resources/static/attendeeImage.jpg");
+            image = attendeeService.extractBytes("/static/attendeeImage.jpg");
         } catch (Exception exc) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error loading image");
         }

@@ -82,9 +82,8 @@ public class AttendeeService {
         return result;
     }
 
-    public byte[] extractBytes(String ImageName) throws IOException {
-        File imgPath = new File(ImageName);
-        BufferedImage bufferedImage = ImageIO.read(imgPath);
+    public byte[] extractBytes(String imageName) throws IOException {
+        BufferedImage bufferedImage = ImageIO.read(getClass().getResourceAsStream(imageName));
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "jpg", bos);
         return (bos.toByteArray());
