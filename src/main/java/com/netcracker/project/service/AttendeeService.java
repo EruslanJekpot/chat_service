@@ -31,21 +31,21 @@ public class AttendeeService {
         this.attendeeRepository = attendeeRepository;
     }
 
-    public List<String> getAttendeesName(List usersIdList){
-        return usersIdList;
-    }
-
-    // идём по списку из айди партисипантов и собираем список имён атенди
-    public HashMap<String, String> postAttendeesName(List usersIdList) {
-        Attendee attendee = new Attendee();
-        List<String> usersId = usersIdList;
-        HashMap<String, String> attendeesName = new HashMap<>();
-        for (String userId: usersId){
-            attendee = attendeeRepository.findAttendeeByUserId(userId);
-            attendeesName.put(userId, attendee.getSurname()+" "+attendee.getName());
-        }
-        return attendeesName;
-    }
+//    public List<String> getAttendeesName(List usersIdList) {
+//        return usersIdList;
+//    }
+//
+//    // идём по списку из айди партисипантов и собираем список имён атенди
+//    public HashMap<String, String> postAttendeesName(List usersIdList) {
+//        Attendee attendee = new Attendee();
+//        List<String> usersId = usersIdList;
+//        HashMap<String, String> attendeesName = new HashMap<>();
+//        for (String userId: usersId){
+//            attendee = attendeeRepository.findAttendeeByUserId(userId);
+//            attendeesName.put(userId, attendee.getSurname()+" "+attendee.getName());
+//        }
+//        return attendeesName;
+//    }
 
     public Attendee findByAttendeeId(UUID attendeeId) {
         return attendeeRepository.findByAttendeeId(attendeeId);
@@ -74,9 +74,9 @@ public class AttendeeService {
         for (Chat chat : chats) {
             List<Attendee> attendees = chat.getAttendeeList();
             for (Attendee attendee : attendees) {
-                attIdFromList=attendee.getAttendeeId().toString();
-                fullName=attendee.getSurname()+" "+attendee.getName();
-                if ((!attIdFromList.equals(currentAttendee.getAttendeeId().toString())) & !result.containsKey(attIdFromList)){
+                attIdFromList = attendee.getAttendeeId().toString();
+                fullName = attendee.getSurname() + " " + attendee.getName();
+                if ((!attIdFromList.equals(currentAttendee.getAttendeeId().toString())) & !result.containsKey(attIdFromList)) {
                     result.put(attIdFromList, fullName);
                 }
             }
