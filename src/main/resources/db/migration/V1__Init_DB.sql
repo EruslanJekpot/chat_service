@@ -1,4 +1,4 @@
-create table attendee (
+create table IF NOT EXISTS attendee (
     attendee_id uuid not null,
     email varchar(255),
     image bytea,
@@ -9,18 +9,18 @@ create table attendee (
     primary key (attendee_id)
 );
 
-create table chat (
+create table IF NOT EXISTS chat (
     chat_id uuid not null,
     name varchar(255),
     primary key (chat_id)
 );
 
-create table chat_members (
+create table IF NOT EXISTS chat_members (
     attendee_id uuid not null,
     chat_id uuid not null
 );
 
-create table message (
+create table IF NOT EXISTS message (
     msg_id uuid not null,
     content varchar,
     msg_date date,

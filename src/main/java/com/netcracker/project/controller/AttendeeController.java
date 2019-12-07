@@ -24,16 +24,17 @@ public class AttendeeController {
         this.attendeeService = attendeeService;
     }
 
-    // получаем list стринговых айди
-    @GetMapping(path = "/event/participantsList")
-    public ResponseEntity getParticipantsId(List usersIdList) {
-        return ResponseEntity.ok().body(attendeeService.getAttendeesName(usersIdList));
-    }
-
-    // толкаем хэшмап со стринговыми айди и именами
-    @PostMapping(path = "attendee/names")
-    public ResponseEntity postAttendeesName(List attendeesName) {
-        return ResponseEntity.ok().body(attendeeService.getAttendeesName(attendeesName));
+    // собирает хэшмап с айди и именами для эвента
+    @GetMapping(path = "/attendee/names")
+    public HashMap getAttendeesName(List usersIdList) {
+        Attendee attendee = new Attendee();
+        List<String> usersId = usersIdList;
+        HashMap<String, String> attendeesName = new HashMap<>();
+        for (String userId: usersId) {
+            attendee = attendeeService.findAttendeeByUserId(userId);
+            attendeesName.put(userId, attendee.getSurname()+" "+attendee.getName());
+        }
+        return attendeesName;
     }
 
     @GetMapping(path = "/attendee/{attendee_id}/info")
