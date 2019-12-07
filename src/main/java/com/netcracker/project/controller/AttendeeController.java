@@ -1,7 +1,6 @@
 package com.netcracker.project.controller;
 
 import com.netcracker.project.domain.Attendee;
-import com.netcracker.project.feign.AttendeeClient;
 import com.netcracker.project.service.AttendeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,35 +18,24 @@ import java.util.UUID;
 @RestController
 public class AttendeeController {
     private AttendeeService attendeeService;
-    private AttendeeClient attendeeClient;
 
     @Autowired
     public AttendeeController(AttendeeService attendeeService) {
         this.attendeeService = attendeeService;
     }
 
+    // собирает хэшмап с айди и именами для эвента
     @GetMapping(path = "/attendee/names")
-    public ResponseEntity<HashMap> getAttendeesName(List usersIdList) {
+    public HashMap getAttendeesName(List usersIdList) {
         Attendee attendee = new Attendee();
-        List<String> usersId = attendeeClient.getParticipantsId(usersIdList);
+        List<String> usersId = usersIdList;
         HashMap<String, String> attendeesName = new HashMap<>();
-        for (String userId: usersId){
+        for (String userId: usersId) {
             attendee = attendeeService.findAttendeeByUserId(userId);
             attendeesName.put(userId, attendee.getSurname()+" "+attendee.getName());
         }
-        return ResponseEntity.ok().body(attendeesName);
+        return attendeesName;
     }
-
-//    @GetMapping(path = "/event/participantsList")
-//    public ResponseEntity getParticipantsId(List usersIdList) {
-//        return ResponseEntity.ok().body(attendeeService.getAttendeesName(usersIdList));
-//    }
-//
-//
-//    @PostMapping(path = "/attendee/names")
-//    public ResponseEntity postAttendeesName(List attendeesName) {
-//        return ResponseEntity.ok().body(attendeeService.getAttendeesName(attendeesName));
-//    }
 
     @GetMapping(path = "/attendee/{attendee_id}/info")
     public ResponseEntity getAttendeeSkills(@PathVariable(value = "attendee_id") UUID attendeeId) {
