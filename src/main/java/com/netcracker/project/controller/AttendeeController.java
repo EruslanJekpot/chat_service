@@ -25,12 +25,11 @@ public class AttendeeController {
     }
 
     // собирает хэшмап с айди и именами для эвента
-    @GetMapping(path = "/attendee/names")
-    public HashMap getAttendeesName(List usersIdList) {
-        Attendee attendee = new Attendee();
-        List<String> usersId = usersIdList;
+    @PostMapping(path = "/attendee/names")
+    public HashMap<String, String> getParticipantsIdAndNames(@RequestBody String[] usersIdList) {
+        Attendee attendee;
         HashMap<String, String> attendeesName = new HashMap<>();
-        for (String userId: usersId) {
+        for (String userId: usersIdList) {
             attendee = attendeeService.findAttendeeByUserId(userId);
             attendeesName.put(userId, attendee.getSurname()+" "+attendee.getName());
         }
@@ -45,6 +44,11 @@ public class AttendeeController {
     @GetMapping(path = "/attendee/{attendee_id}")
     public ResponseEntity getAttendee(@PathVariable(value = "attendee_id") UUID attendeeId) {
         return ResponseEntity.ok().body(attendeeService.findByAttendeeId(attendeeId));
+    }
+
+    @GetMapping(path = "/attendee/from_user/{userId}")
+    public ResponseEntity getAttendeeByUser(@PathVariable(value = "userId") String userId) {
+        return ResponseEntity.ok().body(attendeeService.findAttendeeByUserId(userId));
     }
 
     @GetMapping(path = "/attendee/id")
